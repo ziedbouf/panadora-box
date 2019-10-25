@@ -1,0 +1,88 @@
+version: '3.7'
+services:
+  backend:
+    image: flask-prometheus-app-backend:latest
+    environment:
+      - FLASK_APP=manage.py
+      - FLASK_ENV=development
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgresql
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    networks:
+      - web_nw
+      - db_nw
+      - infra_nw
+
+  postgresql:
+    image: redis:latest
+    environment:
+      - POSTGRES_HOST=postgresql
+      - POSTGRES_USER=postgresql
+      - POSTGRES_PWD=''
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=flask-prometheus-app-db  
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: on-failure:3
+    networks:
+      - db_nw
+
+  grafana:
+    image: grafana/grafana:6.1.2
+    depends_on:
+        - prometheus
+    environment:
+        GF_USERS_ALLOW_SIGN_UP: "false"
+        GF_AUTH_ANONYMOUS_ENABLED: "true"
+        GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    volumes:
+        - ./etc/grafana/provisioning:/etc/grafana/provisioning
+        - ./etc/grafana/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - 3000:3000
+    networks:
+      - infra_nw
+
+  prometheus:
+    image: prom/prometheus:v2.8.1
+    volumes:
+        - ./etc/prometheus/:/etc/prometheus/
+    command:
+        - '--config.file=/etc/prometheus/prometheus.yml'
+        - '--storage.tsdb.path=/prometheus'
+        - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+        - '--web.console.templates=/usr/share/prometheus/consoles'
+        - '--storage.tsdb.retention=200h'
+        - '--web.enable-lifecycle'
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+    networks:
+      - infra_nw
+volumes:
+  db-data:
+    driver: local
+  db-redis:
+    driver: local
+
+networks:
+  db_nw:
+    driver: bridge
+  web_nw:
+    driver: bridge
+  infra_nw:
+    driver: bridge

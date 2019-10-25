@@ -1,0 +1,92 @@
+import logging
+
+from .kops import KOPS
+from .base import BaseEngine
+
+from panadora.config import current_config
+
+
+logger = logging.getLogger('panadora.api')
+config = current_config()
+
+STATE_MAP = {
+    'PROVISIONING': config.get('CLUSTER_PROVISIONING_STATE'),
+    'RUNNING': config.get('CLUSTER_OK_STATE'),
+    'STOPPING': config.get('CLUSTER_DEPROVISIONING_STATE'),
+    'RECONCILING': config.get('CLUSTER_UPDATING_STATE'),
+    'ERROR': config.get('CLUSTER_ERROR_STATE')
+}
+
+
+class GceEngine(BaseEngine):
+    """
+    Google Compute Engine
+    """
+    name = 'gce'
+    verbose_name = 'Google Compute Engine'
+
+    def __init__(self, cluster, **kwargs):
+        """ 
+        Implementation of :func: `panadora.engines.base.BaseEngine.__init__`
+        """
+        # Call parent init to save cluster on self
+        super(GceEngine, self).__init__(cluster, **kwargs)
+        # Client initialization
+        if cluster.provider is not 'gce':
+            raise ValueError(
+                'provider should be gce for GceEngine provisioner')
+
+        if not cluster.project_id:
+            raise ValueError(
+                'project id is needed to provision cluster on gce')
+
+        self.cluster_id = str(self.cluster.id)
+        self.provider = cluster.provider
+        self.project_id = cluster.project_id
+
+        self.cluster.save()
+
+        logger.debug('GKE Cluster configuration: {}'.format(
+            self.cluster.__dict__))
+
+        self.config = self.cluster.__dict__
+        self.client = self._get_client()
+        self.cache_timeout = 5*60
+
+    def _get_client(self):
+        """
+        Initialize KOPS provisionner for GceEngine
+        """
+        _client = KOPS(provider=self.provider, config=self.config)
+        return _client
+
+    def provision(self):
+        if self.cluster.network_policy == 'CALICO' and self.cluster.worker_node_count < 2:
+            msg = 'Setting {} Network Policy for the cluster {} denied due to '\
+                  'unsupported configuration. The minimal size of the '\
+                  'cluster to run network policy enforcement is 2 '\
+                  'n1-standard-1 instances'.format(self.cluster.network_policy,
+                                                   self.cluster_id)
+            logger.error(msg)
+            return False, msg
+
+        try:
+            self.client.provision()
+        except Exception as e:
+            msg = 'Creating cluster {} failed with the following reason: '.format(
+                self.cluster_id)
+            logger.exception(msg)
+            return False, e
+
+        self.cluster.state = STATE_MAP['PROVISIONING']
+        self.cluster.save()
+        return True, None
+
+    def deprovision(self):
+        pass
+
+    def resize(self):
+        pass
+
+    def get_cluster_config(self):
+        pass
