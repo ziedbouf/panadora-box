@@ -1,7 +1,7 @@
 # panadora box
 
 The project is inspired from kqueen developed by mirantis with slight difference on supporting different kubernetes 
-deployement. Also, part of the needed goals to acheive we would like to acheive similair solution to banzaicloud pipeline that provide integration for different solution to support entreprise adotopion.
+deployement. Also, the solutions will provides similair compoents to banzaicloud out of the box to support entreprises.
 
 
 However, Panadora includes difference in the adopted stacks to help support different use cases:
