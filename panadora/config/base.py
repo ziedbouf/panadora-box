@@ -38,7 +38,7 @@ class BaseConfig:
     # KOPS setting
     # @TODO add the needed kops config
     KOPS_PATH = '/usr/local/bin/kops'
-    KOPS_STATE_FILE = 'file:///etc/panadora/state'
+    KOPS_STATE_FILE = 'file:///etc/panadora/kops'
 
     # JWT auth options
     JWT_DEFAULT_REALM = 'Login Required'

@@ -5,7 +5,6 @@ from .base import BaseEngine
 
 from panadora.config import current_config
 
-
 logger = logging.getLogger('panadora.api')
 config = current_config()
 
@@ -19,27 +18,23 @@ STATE_MAP = {
 }
 
 
-class GceEngine(BaseEngine):
+class VmwareEngine(BaseEngine):
     """
-    Google Compute Engine
+    Aws elastic compute ec2
     """
-    name = 'gce'
-    verbose_name = 'Google Compute Engine'
+    name = 'vmware'
+    verbose_name = 'Vmware Compute Platform'
 
     def __init__(self, cluster, **kwargs):
         """
         Implementation of :func: `panadora.engines.base.BaseEngine.__init__`
         """
         # Call parent init to save cluster on self
-        super(GceEngine, self).__init__(cluster, **kwargs)
+        super(VmwareEngine, self).__init__(cluster, **kwargs)
         # Client initialization
-        if cluster.provider is not 'gce':
+        if cluster.provider is not 'vnware':
             raise ValueError(
-                'provider should be gce for GceEngine provisioner')
-
-        if not cluster.project_id:
-            raise ValueError(
-                'project id is needed to provision cluster on gce')
+                'provider should be gce for Vmware provisioner')
 
         self.provider = cluster.provider
         self.cluster_id = str(self.cluster.id)
@@ -47,7 +42,7 @@ class GceEngine(BaseEngine):
 
         self.cluster.save()
 
-        logger.debug('GKE Cluster configuration: {}'.format(
+        logger.debug('AWS Cluster configuration: {}'.format(
             self.cluster.__dict__))
 
         self.config = self.cluster.__dict__
@@ -56,7 +51,7 @@ class GceEngine(BaseEngine):
 
     def _get_client(self):
         """
-        Initialize KOPS provisionner for GceEngine
+        Initialize KOPS provisionner for AWSEngine
         """
         _client = KOPS(provider=self.provider, config=self.config)
         return _client

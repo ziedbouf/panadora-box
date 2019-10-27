@@ -20,13 +20,14 @@ class KOPS:
         self.state_file_path = kwargs.get(
             'state_file_path', app.config.get('KOPS_STATE_FILE'))
 
-        self.env = self._get_env()
+        self.env = self._construct_env()
 
-    def _get_env(self):
+    def _construct_env(self):
+        # @TODO: need to refactor the env variables based on engine
         _env = {
             'KOPS_STATE_STORE': self.state_file_path,
             'ZONE': '${{MASTER_ZONES:-"{}"}}'.format(self.config['zone']),
-            'NAME': self.config['name']
+            'NAME': self.config['cluster_name']
         }
 
         if self.provider == 'gce':
@@ -46,7 +47,20 @@ class KOPS:
             raise Exception(
                 'platform {} not supported, please reach admin for more details'.format(self.provider))
 
-    def provision(self):
+    def kops_get_config(self):
+        """ Generate kubeconfig file in cluster configs directory """
+        try:
+            self.kops_validate
+        except Exception as e:
+            msg = 'cannot export kubeconfig file for cluster {}'.format(
+                self.config['cluster_name'])
+            logger.error('')
+        pass
+
+    def kops_validate(self):
+        pass
+
+    def kops_provision(self):
         """  Provision cluster using
         # Create cluster in GCE.
         # This is an alpha feature.
@@ -62,35 +76,25 @@ class KOPS:
         --image "ubuntu-os-cloud/ubuntu-1604-xenial-v20170202" \
         --yes
         """
-        logger.info('provison gce cluster using KOPS')
-        logger.info('Provisioning the cluster {}'.format(
-            self.config['name']))
+        logger.info('Start provisioning the cluster {}'.format(
+            self.config['cluster_name']))
 
-        result = subprocess.run(
-            ['kops',
-             'create',
-             'cluster',
-             '--master-zones',
-             'us-east-1',
-             '--node-count  3',
-             '--image "ubuntu-os-cloud/ubuntu-1604-xenial-v20170202"',
-             '--project',
-             'test-panadora',
-             '--name',
-             'just-a-cluster',
-             '--yes'],
-            stdout=PIPE,
-            stderr=PIPE,
-            universal_newlines=True,
-            shell=False,
-            env=self.env)
+        command = 'kops create cluster --cloud {provider} --name {cluster_name} --project {project} --zones $ZONES --master-zones $ZONES --node-count {worker_node_count} --image {os_image} --yes'.format(
+            cluster_name=self.config['cluster_name'], provider=self.provider, project=self.config['project_id'], worker_node_count=self.config['worker_node_count'], os_image='ubuntu-os-cloud/ubuntu-1604-xenial-v20170202')
+
+        logger.info(
+            'executed command to provision the cluster {}'.format(command))
+
+        result = subprocess.run(command, stdout=PIPE, stderr=PIPE,
+
+                                universal_newlines=True, shell=True, env=self.env)
 
         if result.returncode == 0:
             logger.info(result.stdout)
             return True, None
         else:
-            msg = 'Cannot provision the cluster: {} from provider {} using KOPS'.format(
-                self.config['id'], self.provider)
+            msg = 'Cannot provision the cluster: {id}/{cluster_name} from provider {provider} using KOPS'.format(
+                id=self.config['id'], cluster_name=self.config['cluster_name'], provider=self.provider)
             logger.info(msg)
 
             if result.stderr:
@@ -100,31 +104,39 @@ class KOPS:
 
         return True, ''
 
-    def deprovision(self):
+    def kops_deprovision(self):
         """ Deprovision/Delete cluster usign
         kops delete cluster --name=k8s.cluster.site --yes
         """
         logger.info('deprovision/delete gce cluster using KOPS')
         try:
-            logger.info('we start deprovisoning/deleting the cluster {}'.format(
-                self.config['name']))
-            result = subprocess.run(
-                ['KOPS', 'help', 'delete', 'cluster'], stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=False, check=True)
+            logger.info('Start provisioning the cluster {}'.format(
+                self.config['cluster_name']))
+
+            command = 'kops delete cluster --name {cluster_name}  --yes'.format(
+                name=self.config['cluster_name'])
+
+            logger.info(
+                'executed command to deprovision the cluster {}'.format(command))
+
+            result = subprocess.run(command, stdout=PIPE, stderr=PIPE,
+                                    universal_newlines=True, shell=True, env=self.env)
 
             if result.returncode == 0:
                 logger.info(result.stdout)
                 return True, None
 
             else:
-                msg = 'Cannot provision the cluster: {} from provider {} using KOPS'.format(
-                    self.config['id'], self.provider)
+                msg = 'Cannot provision the cluster: {id}/{cluster_name} from provider {provider} using KOPS'.format(
+                    id=self.config['id'], cluster_name=self.config['cluster_name'], provider=self.provider)
                 logger.error(msg)
+
                 if result.stderr:
                     logger.error(result.stderr)
 
                 return False, msg
         except (OSError, CalledProcessError) as e:
-            msg = 'Cannot provision the cluster: {} from provider {} using KOPS'.format(
+            msg = 'Cannot deprovision the cluster: {} from provider {} using KOPS'.format(
                 self.config['id'], self.provider)
             logging.error(msg)
             return False, msg
@@ -135,17 +147,14 @@ class KOPS:
 
         return True, ''
 
-    def resize(self):
+    def kops_edit(self):
         pass
 
-    def get_config(self):
+    def kops_resize(self):
         pass
 
-    def edit(self):
+    def kops_upgrade(self):
         pass
 
-    def upgrade(self):
-        pass
-
-    def validate(self):
+    def kops_import(self):
         pass
