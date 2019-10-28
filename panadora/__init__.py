@@ -1,13 +1,12 @@
 import os
-from flask import Blueprint, Response,request
+from flask import Blueprint, Response, request
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from flask_restplus import Api, Namespace, Resource
 
-from panadora.api.controller.user_controller import api as user_ns
-from panadora.api.controller.auth_controller import api as auth_ns
-from panadora.api.controller.gce_controller import api as gce_ns
+from panadora.api.controller.user import api as user_ns
+from panadora.api.controller.auth import api as auth_ns
+from panadora.api.controller.gce import api as gce_ns
 from prometheus_flask_exporter import PrometheusMetrics
-
 
 
 blueprint = Blueprint('api', __name__)
@@ -24,20 +23,21 @@ api.add_namespace(auth_ns)
 
 metrics = PrometheusMetrics(blueprint)
 
+
 @blueprint.route('/metrics')
 def meter():
-  from prometheus_client import multiprocess, CollectorRegistry
+    from prometheus_client import multiprocess, CollectorRegistry
 
-  if 'prometheus_multiproc_dir' in os.environ:
-      registry = CollectorRegistry()
-  else:
-      registry = metrics.registry
+    if 'prometheus_multiproc_dir' in os.environ:
+        registry = CollectorRegistry()
+    else:
+        registry = metrics.registry
 
-  if 'name[]' in request.args:
-      registry = registry.restricted_registry(request.args.getlist('name[]'))
+    if 'name[]' in request.args:
+        registry = registry.restricted_registry(request.args.getlist('name[]'))
 
-  if 'prometheus_multiproc_dir' in os.environ:
-      multiprocess.MultiProcessCollector(registry)
+    if 'prometheus_multiproc_dir' in os.environ:
+        multiprocess.MultiProcessCollector(registry)
 
-  headers = {'Content-Type': CONTENT_TYPE_LATEST}
-  return generate_latest(metrics.registry), 200, headers
+    headers = {'Content-Type': CONTENT_TYPE_LATEST}
+    return generate_latest(metrics.registry), 200, headers

@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 from panadora.api.utils.dto import GceDto
-from panadora.api.service import provisioon_gce
+from panadora.api.service import GceService
 
 api = GceDto.api
 _cluster = GceDto.cluster
@@ -21,7 +21,20 @@ class ClusterList(Resource):
     @api.marshal_with(_cluster, code=201)
     def post(self):
         """ Provision cluster"""
-        provisioon_gce(data=None)
+        data = {
+            'cluster_name': 'just-a-cluster',
+            'zone': 'us-central1-a',
+            'provider': 'gce',
+            'project_id': 'test-kqueen',
+            'master_node_type': 'n1-standard-1',
+            'worker_node_type': 'n1-standard-1',
+            'master_node_count': 3,
+            'worker_node_count': 3,
+            'network_range': '10.0.0.0/14',
+            'network_policy': 'CALICO',
+        }
+        _service = GceService(provider='gce', data=data)
+        _service.fake_provision()
         return '', 201
 
 

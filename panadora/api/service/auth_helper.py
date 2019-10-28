@@ -1,5 +1,6 @@
+from panadora.api.service import save_token
 from panadora.api.model.user import User
-from panadora.api.service.blacklist_service import save_token
+
 
 class Auth:
     @staticmethod

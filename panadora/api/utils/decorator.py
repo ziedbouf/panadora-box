@@ -1,6 +1,7 @@
-from functools import wraps
 from flask import request
-from panadora.api.service.auth_helper import Auth
+from functools import wraps
+
+from panadora.api.service import Auth
 
 
 def token_required(f):
@@ -11,7 +12,7 @@ def token_required(f):
 
         if not token:
             return data, status
-            
+
         return f(*args, **kwargs)
 
     return decorated

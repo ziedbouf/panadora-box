@@ -1,6 +1,5 @@
-from panadora.config import current_config
-
 import logging
+from panadora.config import current_config
 
 config = current_config()
 logger = logging.getLogger('panadora_api')

@@ -1,7 +1,9 @@
 from flask_restplus import Namespace, fields
 
+
 class ProvisionerDto:
-    api = Namespace('provisioner', description='provisioner related operations')
+    api = Namespace(
+        'provisioner', description='provisioner related operations')
     provisioner = api.model('provisioner', {
         'name': fields.String(required=True, description='provisioner name'),
         'project_id': fields.String(description='project to use (must be set on GCE'),
@@ -9,9 +11,10 @@ class ProvisionerDto:
         'cloud-labels': fields.String(description='A list of KV pairs used to tag all instance groups in AWS e.g. Owner=John Doe,Team=Some Team')
     })
 
+
 class GceDto:
     api = Namespace('gce', description='gce cluster related operations')
-    # TODO validation of ip address, and maybe use flask-restplus definition of mode using JSON schema 
+    # TODO validation of ip address, and maybe use flask-restplus definition of mode using JSON schema
     # https://flask-restplus.readthedocs.io/en/stable/marshalling.html#define-model-using-json-schema
     cluster = api.model('cluster', {
         'provisioner_id': fields.String(required=True, description='gce provider id'),
@@ -23,6 +26,7 @@ class GceDto:
         'worker_node_count':  fields.Integer(default=2, required=True, description='worker node count'),
         'network_range': fields.String(default='10.0.0.0/14', required=True, description="")
     })
+
 
 class UserDto:
     api = Namespace('user', description='user related operations')

@@ -29,7 +29,7 @@ class Cluster(db.Model):
                    primary_key=True, default=uuid.uuid4())
     provider = db.Column(db.String(10), nullable=False, default='manual')
     project_id = db.Column(db.String(20), nullable=True)
-    name = db.Column(db.String(30), nullable=False)
+    cluster_name = db.Column(db.String(30), nullable=False)
     zone = db.Column(db.String(20), nullable=False)
     master_node_type = db.Column(db.String(20), nullable=False)
     worker_node_type = db.Column(db.String(20), nullable=False)
@@ -44,10 +44,10 @@ class Cluster(db.Model):
     kube_config = db.Column(sqlalchemy_utils.JSONType(), default={})
 
     def __init__(self, **kwargs):
-        if (not kwargs.get('name', '')
-                or not kwargs.get('zone', '')
-                or not kwargs.get('master_node_type', '')
-                or not kwargs.get('worker_node_type', '')
+        if (not kwargs.get('cluster_name', '')
+            or not kwargs.get('zone', '')
+            or not kwargs.get('master_node_type', '')
+            or not kwargs.get('worker_node_type', '')
             ):
             raise ValueError(
                 'some variables are missing to provision the cluster')
@@ -57,7 +57,7 @@ class Cluster(db.Model):
                 'project id  needed to provision k8s cluster on gce')
 
         self.id = uuid.uuid4()
-        self.name = kwargs.get('name')
+        self.cluster_name = kwargs.get('cluster_name')
         self.zone = kwargs.get('zone')
         self.provider = kwargs.get('provider', 'manual')
         self.project_id = kwargs.get('project_id', '')
@@ -74,21 +74,23 @@ class Cluster(db.Model):
         """ Get kube config data of cluster """
         # @TODO: fix this to check for cluster state and retrive cluster config
         # if the cluster successfully gots provisioned
-        logger.debug('get cluster {} kube config details'.format(self.name))
+        logger.debug(
+            'get cluster {} kube config details'.format(self.cluster_name))
         return self.kube_config
 
     def save(self):
         """ Save cluster to DB """
-        logger.debug('saving cluster {} to database'.format(self.name))
+        logger.debug('saving cluster {} to database'.format(self.cluster_name))
         return True, ''
 
     def delete(self):
         """ Delete cluster from DB """
-        logger.debug('deleting cluster {} from database'.format(self.name))
+        logger.debug(
+            'deleting cluster {} from database'.format(self.cluster_name))
         return True, ''
 
     def update_state(self):
         """ Check for cluster state """
         logger.debug(
-            'updating cluster {} details in database'.format(self.name))
+            'updating cluster {} details in database'.format(self.cluster_name))
         return True, ''
