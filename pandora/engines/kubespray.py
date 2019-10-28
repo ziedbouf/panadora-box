@@ -9,9 +9,9 @@ import logging
 import subprocess
 import ipaddress
 
-from panadora.config import current_config
+from pandora.config import current_config
 
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 config = current_config()
 
 

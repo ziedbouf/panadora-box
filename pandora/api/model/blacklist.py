@@ -1,5 +1,6 @@
 import datetime
-from panadora.api import db
+from pandora.api import db
+
 
 class BlacklistToken(db.Model):
     """

@@ -5,7 +5,7 @@ from subprocess import PIPE, CalledProcessError
 
 from flask import current_app as app
 
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 
 
 class KOPS:

@@ -1,8 +1,8 @@
 import uuid
 import datetime
 
-from panadora.api import db
-from panadora.api.model.user import User
+from pandora.api import db
+from pandora.api.model.user import User
 
 
 def save_new_user(data):

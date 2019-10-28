@@ -4,7 +4,7 @@ import logging
 import os
 import re
 
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 CONFIG_FILE_DEFAULT = 'config/development.py'
 
 
@@ -19,20 +19,20 @@ def select_file(config_file=None):
     """
     if not config_file:
         config_file = os.environ.get(
-            'PANADORA_CONFIG_FILE', CONFIG_FILE_DEFAULT)
+            'PANDORA_CONFIG_FILE', CONFIG_FILE_DEFAULT)
         logger.debug('Config file from env variable {}'.format(config_file))
 
     return config_file
 
 
-def apply_env_changes(config, prefix='PANADORA_'):
+def apply_env_changes(config, prefix='PANDORA_'):
     """Read env variables strting with prefix and apply them to existing configuration
 
     Arguments:
         config {obj} -- Configuration objct. this configuration will updated
 
     Keyword Arguments:
-        prefix {str} -- Prefix for enviroment variables to select. (default: {'PANADORA_'})
+        prefix {str} -- Prefix for enviroment variables to select. (default: {'PANDORA_'})
     """
     for name, value in os.environ.items():
         if name.startswith(prefix):
@@ -52,7 +52,7 @@ def current_config(config_file=None):
     logger.debug('Loading configuration from {}'.format(read_file))
 
     module_name = read_file.replace('/', '.').replace('.py', '')
-    module = importlib.import_module('panadora.{}'.format(module_name))
+    module = importlib.import_module('pandora.{}'.format(module_name))
     config = getattr(module, 'Config')
     apply_env_changes(config)
     setattr(config, 'source_file', read_file)

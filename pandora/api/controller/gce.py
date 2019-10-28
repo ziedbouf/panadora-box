@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
-from panadora.api.utils.dto import GceDto
-from panadora.api.service import GceService
+from pandora.api.utils.dto import GceDto
+from pandora.api.service import GceService
 
 api = GceDto.api
 _cluster = GceDto.cluster
@@ -10,7 +10,7 @@ _cluster = GceDto.cluster
 @api.route('/')
 class ClusterList(Resource):
 
-    @api.doc('list all provisioned cluster using panadora')
+    @api.doc('list all provisioned cluster using pandora')
     @api.marshal_list_with(_cluster)
     def get(self):
         """ List all the deployed cluster"""

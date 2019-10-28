@@ -1,5 +1,5 @@
-from panadora.api.service import save_token
-from panadora.api.model.user import User
+from .blacklist import save_token
+from pandora.api.model.user import User
 
 
 class Auth:

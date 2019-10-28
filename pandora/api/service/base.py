@@ -1,7 +1,7 @@
 import logging
-from panadora.api.model import Cluster
+from pandora.api.model import Cluster
 
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 
 
 class BaseProvisionnerService:

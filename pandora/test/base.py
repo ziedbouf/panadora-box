@@ -1,9 +1,10 @@
 
 from flask_testing import TestCase
 
-from panadora.api import db
-from panadora.server import app
-from panadora.config import current_config
+from pandora.api import db
+from pandora.server import app
+from pandora.config import current_config
+
 
 class BaseTestCase(TestCase):
     """ Base Tests """

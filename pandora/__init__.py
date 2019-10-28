@@ -3,9 +3,9 @@ from flask import Blueprint, Response, request
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from flask_restplus import Api, Namespace, Resource
 
-from panadora.api.controller.user import api as user_ns
-from panadora.api.controller.auth import api as auth_ns
-from panadora.api.controller.gce import api as gce_ns
+from pandora.api.controller.user import api as user_ns
+from pandora.api.controller.auth import api as auth_ns
+from pandora.api.controller.gce import api as gce_ns
 from prometheus_flask_exporter import PrometheusMetrics
 
 

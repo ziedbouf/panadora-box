@@ -5,11 +5,12 @@ from .base import BaseConfig, basedir
 class Config(BaseConfig):
     DEBUG = True
     TESTING = True
-    LOG_CONFIG = 'panadora/utils/logger_config.yml'
+    LOG_CONFIG = 'pandora/utils/logger_config.yml'
 
     # DB setting
-    DB_NAME = 'db/t_panadora'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, '{}.db'.format(DB_NAME))
+    DB_NAME = 'db/t_pandora'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(basedir, '{}.db'.format(DB_NAME))
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     PRESERVE_CONTEXT_ON_EXCEPTION = False

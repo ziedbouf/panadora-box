@@ -4,8 +4,8 @@ import unittest
 from flask import current_app
 from flask_testing import TestCase
 
-from panadora.server import app
-from panadora.config import current_config, basedir
+from pandora.server import app
+from pandora.config import current_config, basedir
 
 
 class TestTestingConfig(TestCase):
@@ -17,7 +17,8 @@ class TestTestingConfig(TestCase):
         self.assertTrue(app.config['SECRET_KEY'] is 'my_precious')
         self.assertTrue(app.config['DEBUG'])
         self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(basedir, 'db/t_panadora.db')
+            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' +
+            os.path.join(basedir, 'db/t_pandora.db')
         )
 
 
@@ -31,7 +32,8 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(app.config['DEBUG'] is True)
         self.assertFalse(current_app is None)
         self.assertTrue(
-            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' + os.path.join(basedir, 'db/panadora.db')
+            app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///' +
+            os.path.join(basedir, 'db/pandora.db')
         )
 
 

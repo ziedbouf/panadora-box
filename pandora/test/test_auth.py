@@ -1,9 +1,9 @@
 import json
 import unittest
 
-from panadora.api import db
-from panadora.api.model.blacklist import BlacklistToken
-from panadora.test.base import BaseTestCase
+from pandora.api import db
+from pandora.api.model.blacklist import BlacklistToken
+from pandora.test.base import BaseTestCase
 
 
 def register_user(self):
@@ -82,7 +82,8 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
             print(data['message'])
-            self.assertTrue(data['message'] == 'email or password does not match.')
+            self.assertTrue(data['message'] ==
+                            'email or password does not match.')
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 401)
 
@@ -156,7 +157,8 @@ class TestAuthBlueprint(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(data['message'] == 'Token blacklisted. Please log in again.')
+            self.assertTrue(data['message'] ==
+                            'Token blacklisted. Please log in again.')
             self.assertEqual(response.status_code, 401)
 
 

@@ -5,8 +5,8 @@ import sqlalchemy_utils
 
 from flask import current_app as app
 
-from panadora.api import db, flask_bcrypt
-from panadora.config import current_config
+from pandora.api import db, flask_bcrypt
+from pandora.config import current_config
 from .provisionner import Provisioner
 
 logger = logging.getLogger('panadora_api')

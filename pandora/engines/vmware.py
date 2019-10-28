@@ -3,9 +3,9 @@ import logging
 from .kops import KOPS
 from .base import BaseEngine
 
-from panadora.config import current_config
+from pandora.config import current_config
 
-logger = logging.getLogger('panadora.api')
+logger = logging.getLogger('pandora.api')
 config = current_config()
 
 # @TODO: move this out and use flask current_app config

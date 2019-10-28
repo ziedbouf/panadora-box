@@ -1,9 +1,9 @@
 from flask import request
 from flask_restplus import Resource
 
-from panadora.api.utils.decorator import admin_token_required
-from panadora.api.service import save_new_user, get_all_users, get_a_user
-from panadora.api.utils.dto import UserDto
+from pandora.api.utils.decorator import admin_token_required
+from pandora.api.service import save_new_user, get_all_users, get_a_user
+from pandora.api.utils.dto import UserDto
 
 api = UserDto.api
 _user = UserDto.user

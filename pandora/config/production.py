@@ -3,7 +3,7 @@ from .base import BaseConfig
 
 class Config(BaseConfig):
     DEBUG = False
-    LOG_CONFIG = 'panadora/utils/logger_config.yml'
+    LOG_CONFIG = 'pandora/utils/logger_config.yml'
 
     # App secret - set this to random string >= 16 chars
     SECRET_KEY = 'secret123secret123secret123'

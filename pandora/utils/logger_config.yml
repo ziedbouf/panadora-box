@@ -18,7 +18,7 @@ handlers:
     class: logging.handlers.RotatingFileHandler
     level: DEBUG
     formatter: standard
-    filename: /var/log/panadora-api/panadora_api.log
+    filename: /var/log/pandora-api/pandora_api.log
     maxBytes: 10485760 # 10MB
     backupCount: 20
     encoding: utf8
@@ -27,7 +27,7 @@ handlers:
     class: logging.handlers.RotatingFileHandler
     level: ERROR
     formatter: error
-    filename: /var/log/panadora-api/panadora_api_error.log
+    filename: /var/log/pandora-api/pandora_api_error.log
     maxBytes: 10485760 # 10MB
     backupCount: 20
     encoding: utf8

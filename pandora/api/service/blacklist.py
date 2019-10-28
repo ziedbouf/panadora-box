@@ -1,5 +1,5 @@
-from panadora.api import db
-from panadora.api.model.blacklist import BlacklistToken
+from pandora.api import db
+from pandora.api.model.blacklist import BlacklistToken
 
 
 def save_token(token):

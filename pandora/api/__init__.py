@@ -1,13 +1,13 @@
 import os
-import panadora
+import pandora
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
-from panadora.config import current_config
-from panadora.utils.loggers import setup_logging
+from pandora.config import current_config
+from pandora.utils.loggers import setup_logging
 from .exceptions import ImproperlyConfigured
 
 db = SQLAlchemy()
@@ -19,7 +19,7 @@ def create_app(config_file):
     app = Flask(__name__)
     # load configuration
     config = current_config(config_file)
-    root_path = os.path.dirname(os.path.dirname(panadora.__file__))
+    root_path = os.path.dirname(os.path.dirname(pandora.__file__))
     logger_config_path = os.path.join(root_path, config.get('LOG_CONFIG'))
     setup_logging(logger_config_path, config.get('DEBUG'))
 

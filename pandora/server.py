@@ -1,9 +1,9 @@
 import os
 import unittest
 
-from panadora import blueprint
-from panadora.api import create_app, db
-from panadora.api.model import User, UserRoles, Role, BlacklistToken, Organization, Cluster, Provisioner
+from pandora import blueprint
+from pandora.api import create_app, db
+from pandora.api.model import User, UserRoles, Role, BlacklistToken, Organization, Cluster, Provisioner
 
 from flask_user import UserManager
 from flask_migrate import Migrate, MigrateCommand, init

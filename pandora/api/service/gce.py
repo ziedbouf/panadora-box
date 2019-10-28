@@ -3,10 +3,10 @@ import datetime
 import logging
 from .base import BaseProvisionnerService
 
-from panadora.engines import GceEngine
-from panadora.api.model import Cluster
+from pandora.engines import GceEngine
+from pandora.api.model import Cluster
 
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 
 # @TODO: delete this as soon as possible
 

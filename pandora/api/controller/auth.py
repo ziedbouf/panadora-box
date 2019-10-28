@@ -1,8 +1,8 @@
 from flask import request
 from flask_restplus import Resource
 
-from panadora.api.service.auth_helper import Auth
-from panadora.api.utils.dto import AuthDto
+from pandora.api.service.auth_helper import Auth
+from pandora.api.utils.dto import AuthDto
 
 api = AuthDto.api
 user_auth = AuthDto.user_auth

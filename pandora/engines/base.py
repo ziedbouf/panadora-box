@@ -1,16 +1,16 @@
 import logging
-from panadora.config import current_config
+from pandora.config import current_config
 
 config = current_config()
-logger = logging.getLogger('panadora_api')
+logger = logging.getLogger('pandora_api')
 
 
 class BaseEngine:
     """Base engine object.
 
-    When you initialize the engine through the prepared property: func: `~panadora.models.Cluster.engine`
-    on :obj:`panadora.models.Cluster` model object, all keys in engine object parameters attribute (JSONField) on
-    :obj:`panadora.models.Provisoner` obeject are passed as kwargs
+    When you initialize the engine through the prepared property: func: `~pandora.models.Cluster.engine`
+    on :obj:`pandora.models.Cluster` model object, all keys in engine object parameters attribute (JSONField) on
+    :obj:`pandora.models.Provisoner` obeject are passed as kwargs
 
     Examples::
         >>> print my_provisioner.parameters
@@ -19,11 +19,11 @@ class BaseEngine:
         {'username': 'foo', 'password': 'bar'}
 
     Arguments:
-      cluster {:obj:`panadora.models.Cluster`} -- Cluster model object related to the engine instance
+      cluster {:obj:`pandora.models.Cluster`} -- Cluster model object related to the engine instance
       **kwargs: keyword arguments specific to Provisionner implementation
 
     Attributes:
-      cluster {:obj:`panadora.models.Cluster`} -- Cluster model object related to the engine instance
+      cluster {:obj:`pandora.models.Cluster`} -- Cluster model object related to the engine instance
       name {str} -- NAme of the engine usable by program
       verbose_name {str} --  Human readable name of the engine
       parameter_schema (dict): Dictionary representation of the parameters with hints for form rendering.::
@@ -67,7 +67,7 @@ class BaseEngine:
               {
                   'key': key,     # this record should be cached under this key if you choose to cache
                   'name': name,   # name of the cluster in its respective backend
-                  'id': id,       # id of `panadora.models.Cluster` object in Panadora database if cluster managed by Panadora,
+                  'id': id,       # id of `pandora.models.Cluster` object in Pandora database if cluster managed by Pandora,
                                     otherwise None
                   'state': state, # cluster.state
                   'metadata': {
@@ -90,7 +90,7 @@ class BaseEngine:
             {
               'key': key,     # (str) this record should be cached under this key if you choose to cache
               'name': name,   # (str) name of the cluster in its respective backend
-              'id': id,       # (str or UUID) id of `Panadora.models.Cluster` object in Panadora database
+              'id': id,       # (str or UUID) id of `pandora.models.Cluster` object in Pandora database
               'state': state, # (str) state of cluster on backend represented by app.config['CLUSTER_[FOO]_STATE']
               'metadata': {
                   'foo': bar  # any keys specific for the Provisioner implementation
@@ -190,7 +190,7 @@ class BaseEngine:
 
         This method should return parameters specific to the Provisioner implementation,
         these are used to generate form for creation of Provisioner object and are stored
-        in parameters attribute (JSONField) of the `panadora.models.Provisioner` object.
+        in parameters attribute (JSONField) of the `pandora.models.Provisioner` object.
 
         Returns:
             dict:  Returns ``self.parameter_schema`` in default, but can be overridden.

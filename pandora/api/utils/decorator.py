@@ -1,7 +1,7 @@
 from flask import request
 from functools import wraps
 
-from panadora.api.service import Auth
+from pandora.api.service import Auth
 
 
 def token_required(f):

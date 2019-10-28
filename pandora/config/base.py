@@ -12,22 +12,22 @@ class BaseConfig:
     SECRET_KEY = 'my_precious_secret_key'
 
     LOG_LEVEL = 'WARNING'
-    LOG_CONFIG = 'panadora/utils/logger_config.yml'
+    LOG_CONFIG = 'pandora/utils/logger_config.yml'
 
-    PANADORA_HOST = '0.0.0.0'
-    PANADORA = 5000
+    PANDORA_HOST = '0.0.0.0'
+    PANDORA = 5000
 
     POOL_MAX_WORKER = 64
 
     # DB setting
-    DB_NAME = "panadora"
+    DB_NAME = "pandora"
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(basedir, '{}.db'.format(DB_NAME))
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Kubespray setting
-    KS_FILE_PATH = "/opt/panadora"
+    KS_FILE_PATH = "/opt/pandora"
     KS_KUBESPRAY_PATH = './kubespray'
     KS_SSH_CMD = '/user/bin/ssh'
     KS_SSH_KEYGEN_CMD = "/usr/bin/ssh-keygen"
@@ -38,7 +38,7 @@ class BaseConfig:
     # KOPS setting
     # @TODO add the needed kops config
     KOPS_PATH = '/usr/local/bin/kops'
-    KOPS_STATE_FILE = 'file:///etc/panadora/kops'
+    KOPS_STATE_FILE = 'file:///etc/pandora/kops'
 
     # JWT auth options
     JWT_DEFAULT_REALM = 'Login Required'
@@ -75,12 +75,12 @@ class BaseConfig:
 
     # Auth config
     LDAP_URI = 'ldap://127.0.0.1'
-    # Creds for Panadora Read-only user
+    # Creds for Pandora Read-only user
     LDAP_DN = 'cn=admin,dc=example,dc=org'
     LDAP_PASSWORD = 'heslo123'
 
     # MAIL Setting
-    USER_EMAIL_SENDER_EMAIL = 'hello@panadora.io'
+    USER_EMAIL_SENDER_EMAIL = 'hello@pandora.io'
 
     @classmethod
     def get(cls, name, default=None):

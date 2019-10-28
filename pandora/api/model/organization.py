@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy_utils import JSONType
-from panadora.api import db, flask_bcrypt
+from pandora.api import db, flask_bcrypt
 
 
 class Organization(db.Model):
